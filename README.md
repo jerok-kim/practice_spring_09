@@ -30,3 +30,36 @@ title=입력한값&content=입력한값
 method : POST
 content-type : "application/x-www-form-urlencoded; charset=utf-8"
 ```
+
+### User MVC 만들기
+
+1. 인증 MVC 만들기
+   - views/user/loginForm.jsp 만들기
+   - views/user/joinForm.jsp 만들기
+   - model/User.java 모델 만들기
+   - model/UserRepository.java 만들기
+   - DispatcherServlet에 아래의 요구사항에 맞는 switch문을 만들고 적절한 Controller를 요청하기
+   ```text
+   1. POST 요청 -> http://localhost:8080/user/login.do
+   x-www-form-urlencoded
+   username=ssar&password=1234
+
+
+   2. POST 요청 -> http://localhost:8080/user/join.do
+   x-www-form-urlencoded
+   username=ssar&password=1234&email=ssar@nate.com
+
+   3. GET 요청 -> http://localhost:8080/user/joinForm.do
+   4. GET 요청 -> http://localhost:8080/user/loginForm.do
+   ```
+   - controller/UserController.java 만들기
+   - join이 요청되고 나면 DB 클래스에 한건의 User가 추가되게 하기
+   - UserController에서 login 요청이 되고 나면 session에 키값 "user", 값 User 오브젝트를 담기
+   - login이 완료되면, /board/list.do 를 리다이렉션하기
+
+2. 심화
+   - /board/list.do 요청이 있을 때, session 값을 체크한 뒤 user 값이 없으면 /user/login.do 로 리다이렉션 시키기
+   - POST 요청시 유효성 검사를 진행하는데, 유효성 검사 실패시에 에러페이지를 응답해주기
+   ```text
+   /WEB-INF/views/err/badrequest.jsp
+   ```
