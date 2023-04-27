@@ -31,16 +31,17 @@ public class DispatcherServlet extends HttpServlet {
         String action = getAction(req);
         System.out.println("action : " + action);
 
+        // 싱글톤 패턴으로 변경
         // 4. 컨트롤러 객체 생성
         // BoardRepository boardRepository = new BoardRepository();
-        BoardController boardController = new BoardController(new BoardRepository());  // DI (의존성 주입)
-        UserController userController = new UserController(new UserRepository());
+        // BoardController boardController = new BoardController(new BoardRepository());  // DI (의존성 주입)
+        // UserController userController = new UserController(new UserRepository());
 
         // 5. 라우팅하기
         if (path.equals("board")) {
             switch (action) {
                 case "saveForm":
-                    String saveFormView = boardController.saveForm();
+                    String saveFormView = ControllerFactory.getBoardController().saveForm();
                     req.getRequestDispatcher(saveFormView).forward(req, resp);
                     break;
                 case "save":  // POST로 게시글 쓰기 요청 (title, content)
@@ -52,12 +53,12 @@ public class DispatcherServlet extends HttpServlet {
                     }
                     String title = req.getParameter("title");
                     String content = req.getParameter("content");
-                    String saveRedirect = boardController.save(title, content);
+                    String saveRedirect = ControllerFactory.getBoardController().save(title, content);
                     resp.sendRedirect(saveRedirect);
                     break;
                 case "list":
                     // MVC에 위임하는 코드
-                    String listView = boardController.list(req);
+                    String listView = ControllerFactory.getBoardController().list(req);
                     req.getRequestDispatcher(listView).forward(req, resp);
                     break;
                 default:
@@ -76,7 +77,7 @@ public class DispatcherServlet extends HttpServlet {
                     }
                     String username = req.getParameter("username");
                     String password = req.getParameter("password");
-                    String loginRedirect = userController.login(req, username, password);
+                    String loginRedirect = ControllerFactory.getUserController().login(req, username, password);
                     resp.sendRedirect(loginRedirect);
                     break;
                 case "join":
@@ -89,15 +90,15 @@ public class DispatcherServlet extends HttpServlet {
                     String username2 = req.getParameter("username");
                     String password2 = req.getParameter("password");
                     String email = req.getParameter("email");
-                    String joinRedirect = userController.join(username2, password2, email);
+                    String joinRedirect = ControllerFactory.getUserController().join(username2, password2, email);
                     resp.sendRedirect(joinRedirect);
                     break;
                 case "loginForm":
-                    String loginFormView = userController.loginForm();
+                    String loginFormView = ControllerFactory.getUserController().loginForm();
                     req.getRequestDispatcher(loginFormView).forward(req, resp);
                     break;
                 case "joinForm":
-                    String joinFormView = userController.joinForm();
+                    String joinFormView = ControllerFactory.getUserController().joinForm();
                     req.getRequestDispatcher(joinFormView).forward(req, resp);
                     break;
                 default:
