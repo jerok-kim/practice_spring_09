@@ -1,10 +1,5 @@
 package kim.jerok.mvc_app;
 
-import kim.jerok.mvc_app.controller.BoardController;
-import kim.jerok.mvc_app.controller.UserController;
-import kim.jerok.mvc_app.model.BoardRepository;
-import kim.jerok.mvc_app.model.UserRepository;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
