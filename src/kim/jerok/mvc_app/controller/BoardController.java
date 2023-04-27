@@ -23,7 +23,7 @@ public class BoardController {
     public String list(HttpServletRequest request) {
         // C - M - V
         System.out.println("list : 요청됨");
-        
+
         // session 값을 체크한 뒤 user 값이 없으면 /user/login.do 로 리다이렉션
         if (request.getSession().getAttribute("user") == null) {
             return "/user/login.do";
@@ -46,11 +46,11 @@ public class BoardController {
         // 검증코드 : http method 4가지 중에!!
         // POST, PUT은 resource를 클라이언트로 부터 전달 받으니까!!
         if (title == null || title.equals("")) {
-            return "/err/badrequest.jsp";
+            throw new RuntimeException("title이 없습니다");
         }
 
         if (content == null || content.equals("")) {
-            return "/err/badrequest.jsp";
+            throw new RuntimeException("content가 없습니다");
         }
 
         boardRepository.save(title, content);

@@ -1,5 +1,7 @@
 package kim.jerok.mvc_app;
 
+import kim.jerok.mvc_app.config.ViewResolver;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -48,9 +50,15 @@ public class DispatcherServlet extends HttpServlet {
                     }
                     String title = req.getParameter("title");
                     String content = req.getParameter("content");
-                    String saveRedirect = ControllerFactory.getBoardController().save(title, content);
-                    resp.sendRedirect(saveRedirect);
-                    break;
+                    try {
+                        String saveRedirect = ControllerFactory.getBoardController().save(title, content);
+                        resp.sendRedirect(saveRedirect);
+                        break;
+                    } catch (RuntimeException e) {
+                        req.setAttribute("err", e.getMessage());
+                        req.getRequestDispatcher(ViewResolver.resolve("/err/badRequest")).forward(req, resp);
+                        break;
+                    }
                 case "list":
                     // MVC에 위임하는 코드
                     String listView = ControllerFactory.getBoardController().list(req);
@@ -72,9 +80,15 @@ public class DispatcherServlet extends HttpServlet {
                     }
                     String username = req.getParameter("username");
                     String password = req.getParameter("password");
-                    String loginRedirect = ControllerFactory.getUserController().login(req, username, password);
-                    resp.sendRedirect(loginRedirect);
-                    break;
+                    try {
+                        String loginRedirect = ControllerFactory.getUserController().login(req, username, password);
+                        resp.sendRedirect(loginRedirect);
+                        break;
+                    } catch (RuntimeException e) {
+                        req.setAttribute("err", e.getMessage());
+                        req.getRequestDispatcher(ViewResolver.resolve("/err/badRequest")).forward(req, resp);
+                        break;
+                    }
                 case "join":
                     String method2 = req.getMethod();
                     if (!method2.equals("POST")) {
@@ -85,9 +99,15 @@ public class DispatcherServlet extends HttpServlet {
                     String username2 = req.getParameter("username");
                     String password2 = req.getParameter("password");
                     String email = req.getParameter("email");
-                    String joinRedirect = ControllerFactory.getUserController().join(username2, password2, email);
-                    resp.sendRedirect(joinRedirect);
-                    break;
+                    try {
+                        String joinRedirect = ControllerFactory.getUserController().join(username2, password2, email);
+                        resp.sendRedirect(joinRedirect);
+                        break;
+                    } catch (RuntimeException e) {
+                        req.setAttribute("err", e.getMessage());
+                        req.getRequestDispatcher(ViewResolver.resolve("/err/badRequest")).forward(req, resp);
+                        break;
+                    }
                 case "loginForm":
                     String loginFormView = ControllerFactory.getUserController().loginForm();
                     req.getRequestDispatcher(loginFormView).forward(req, resp);

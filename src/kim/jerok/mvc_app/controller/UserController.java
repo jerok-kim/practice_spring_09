@@ -19,11 +19,11 @@ public class UserController {
         System.out.println("login : 요청됨");
 
         if (username == null || username.equals("")) {
-            return "/err/badrequest.jsp";
+            throw new RuntimeException("username이 없습니다");
         }
 
         if (password == null || password.equals("")) {
-            return "/err/badrequest.jsp";
+            throw new RuntimeException(("password가 없습니다"));
         }
 
         User user = userRepository.login(username, password);
@@ -36,15 +36,15 @@ public class UserController {
         System.out.println("join : 요청됨");
 
         if (username == null || username.equals("")) {
-            return "/err/badrequest.jsp";
+            throw new RuntimeException("username이 없습니다");
         }
 
         if (password == null || password.equals("")) {
-            return "/err/badrequest.jsp";
+            throw new RuntimeException("password가 없습니다");
         }
 
         if (email == null || email.equals("")) {
-            return "/err/badrequest.jsp";
+            throw new RuntimeException("email이 없습니다");
         }
 
         userRepository.join(username, password, email);
